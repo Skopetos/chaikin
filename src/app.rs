@@ -89,7 +89,8 @@ impl App {
                     self.current_step = 0;
                 }
 
-                self.last_step_time = now;
+               self.last_step_time = now;
+
             }
         }
     }
@@ -112,8 +113,10 @@ impl App {
             }
         }
 
-        // always show original control points
-        ui::draw_points_as_circles(&self.control_points, 4.0, 1.5, BLACK);
+        // show original control points only when not animating
+        if !self.is_animating {
+            ui::draw_points_as_circles(&self.control_points, 4.0, 1.5, BLACK);
+        }
 
         // optional helper lines between control points
         //if self.control_points.len() >= 2 {
