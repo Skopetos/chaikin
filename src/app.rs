@@ -89,10 +89,7 @@ impl App {
             ui::draw_points_as_circles(&self.control_points, 4.0, 1.5, BLACK);
         
 
-        // optional helper lines between control points
-        //if self.control_points.len() >= 2 {
-         //   ui::draw_polyline(&self.control_points, 1.0, GRAY);
-       // }
+      
 
         ui::draw_instructions(
             self.control_points.len(),
