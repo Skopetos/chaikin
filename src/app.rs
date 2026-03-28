@@ -84,10 +84,10 @@ impl App {
             }
         }
 
-        // show original control points only when not animating
-        if !self.animator.is_animating() {
+        // show original control points 
+        
             ui::draw_points_as_circles(&self.control_points, 4.0, 1.5, BLACK);
-        }
+        
 
         // optional helper lines between control points
         //if self.control_points.len() >= 2 {
