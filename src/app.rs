@@ -1,16 +1,10 @@
-use crate::algorithm::build_steps;
+use crate::animations::ChaikinAnimator;
 use crate::ui;
 use macroquad::prelude::*;
 
-const MAX_STEPS: usize = 7;
-const STEP_DURATION: f64 = 0.6;
-
 pub struct App {
     control_points: Vec<Vec2>,
-    steps: Vec<Vec<Vec2>>,
-    is_animating: bool,
-    current_step: usize,
-    last_step_time: f64,
+    animator: ChaikinAnimator,
     show_no_points_message: bool,
     no_points_message_time: f64,
 }
@@ -19,10 +13,7 @@ impl App {
     pub fn new() -> Self {
         Self {
             control_points: Vec::new(),
-            steps: Vec::new(),
-            is_animating: false,
-            current_step: 0,
-            last_step_time: 0.0,
+            animator: ChaikinAnimator::new(),
             show_no_points_message: false,
             no_points_message_time: 0.0,
         }
@@ -35,22 +26,18 @@ impl App {
         }
 //reset
         if is_key_pressed(KeyCode::C) {
-        self.control_points.clear();
-        self.steps.clear();
-        self.is_animating = false;
-        self.current_step = 0;
-       }
+            self.control_points.clear();
+            self.animator.clear();
+        }
 
-         if is_mouse_button_pressed(MouseButton::Left) {
-            if self.is_animating {                     
-                self.is_animating = false;
-                self.current_step = 0;                                                                                                                             
-                self.steps.clear();   
-            } else {                                                                                                                                               
+        if is_mouse_button_pressed(MouseButton::Left) {
+            if self.animator.is_animating() {
+                self.animator.stop_and_reset_step();
+            } else {
                 let (mx, my) = mouse_position();
                 self.control_points.push(vec2(mx, my));
             }
-         }  
+        }
 
         if is_key_pressed(KeyCode::Enter) {
             match self.control_points.len() {
@@ -59,15 +46,11 @@ impl App {
                     self.no_points_message_time = get_time();
                 }
                 1 | 2 => {
-                    self.is_animating = false;
-                    self.current_step = 0;
-                    self.steps.clear();
+                    self.animator.clear();
                 }
                 _ => {
-                    self.steps = build_steps(&self.control_points, MAX_STEPS);
-                    self.is_animating = true;
-                    self.current_step = 0;
-                    self.last_step_time = get_time();
+                    self.animator
+                        .start(&self.control_points, get_time());
                 }
             }
         }
@@ -80,24 +63,11 @@ impl App {
             self.show_no_points_message = false;
         }
 
-        if self.is_animating && !self.steps.is_empty() {
-            let now = get_time();
-
-            if now - self.last_step_time >= STEP_DURATION {
-                self.current_step += 1;
-
-                if self.current_step > MAX_STEPS {
-                    self.current_step = 0;
-                }
-
-               self.last_step_time = now;
-
-            }
-        }
+        self.animator.update(get_time());
     }
 
     pub fn draw(&self) {
-        let shown_points = self.points_to_draw();
+        let shown_points = self.animator.curve_points(&self.control_points);
 
         // draw current shape
         match shown_points.len() {
@@ -115,7 +85,7 @@ impl App {
         }
 
         // show original control points only when not animating
-        if !self.is_animating {
+        if !self.animator.is_animating() {
             ui::draw_points_as_circles(&self.control_points, 4.0, 1.5, BLACK);
         }
 
@@ -126,8 +96,8 @@ impl App {
 
         ui::draw_instructions(
             self.control_points.len(),
-            self.current_step,
-            self.is_animating,
+            self.animator.current_step(),
+            self.animator.is_animating(),
         );
 
         if self.show_no_points_message {
@@ -135,11 +105,4 @@ impl App {
         }
     }
 
-    fn points_to_draw(&self) -> &[Vec2] {
-        if self.steps.is_empty() {
-            &self.control_points
-        } else {
-            &self.steps[self.current_step]
-        }
-    }
 }

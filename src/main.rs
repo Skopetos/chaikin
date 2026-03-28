@@ -1,4 +1,5 @@
 mod algorithm;
+mod animations;
 mod app;
 mod ui;
 
