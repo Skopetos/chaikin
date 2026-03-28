@@ -3,7 +3,7 @@ use crate::ui;
 use macroquad::prelude::*;
 
 const MAX_STEPS: usize = 7;
-const STEP_DURATION: f64 = 0.8;
+const STEP_DURATION: f64 = 0.6;
 
 pub struct App {
     control_points: Vec<Vec2>,
@@ -41,15 +41,16 @@ impl App {
         self.current_step = 0;
        }
 
-        if is_mouse_button_pressed(MouseButton::Left) {
-            let (mx, my) = mouse_position();
-            self.control_points.push(vec2(mx, my));
-
-            // reset animation whenever a new point is added
-            self.is_animating = false;
-            self.current_step = 0;
-            self.steps.clear();
-        }
+         if is_mouse_button_pressed(MouseButton::Left) {
+            if self.is_animating {                     
+                self.is_animating = false;
+                self.current_step = 0;                                                                                                                             
+                self.steps.clear();   
+            } else {                                                                                                                                               
+                let (mx, my) = mouse_position();
+                self.control_points.push(vec2(mx, my));
+            }
+         }  
 
         if is_key_pressed(KeyCode::Enter) {
             match self.control_points.len() {
