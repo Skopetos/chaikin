@@ -12,7 +12,6 @@ Interactive canvas: draw control points with the mouse, then press **Enter** to 
 
 Chaikin’s algorithm is mandatory. Unit tests should verify 25% / 75% corner cuts, point-count growth (e.g. open curve: \(N \rightarrow 2N - 2\)), and safe handling of 0, 1, or 2 points.
 
-**Bonus:** clear the canvas; drag control points in real time.
 
 ## How to run
 
@@ -33,14 +32,6 @@ From the project root:
 ```bash
 cargo test
 ```
-
-Runs all unit tests (including checks for Chaikin iterations, point counts, and edge cases). For verbose output:
-
-```bash
-cargo test -- --nocapture
-```
-
----
 
 # Chaikin algorithm explanation
 
@@ -185,8 +176,8 @@ It's basically saying: "Give me 75% of the start position plus 25% of the end po
 
 ## Team
 
-| Name | Handle | Gitea |
-|------|--------|--------|
+| Name | Gitea |
+|------|--------|
 | Theocharoula Tarara | [@ttarara](https://platform.zone01.gr/git/ttarara) | 
 | Manos Papoutsakis | [@mpapoutsa](https://platform.zone01.gr/git/mpapoutsa) | 
 | Georgios Pavrianidis | [@gpavrian](https://platform.zone01.gr/git/gpavrian) | 
