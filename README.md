@@ -14,6 +14,32 @@ Chaikin’s algorithm is mandatory. Unit tests should verify 25% / 75% corner cu
 
 **Bonus:** clear the canvas; drag control points in real time.
 
+## How to run
+
+You need a [Rust toolchain](https://www.rust-lang.org/tools/install) (`rustc`, `cargo`).
+
+From the project root:
+
+```bash
+cargo run
+```
+
+This builds and starts the application window.
+
+## How to test
+
+From the project root:
+
+```bash
+cargo test
+```
+
+Runs all unit tests (including checks for Chaikin iterations, point counts, and edge cases). For verbose output:
+
+```bash
+cargo test -- --nocapture
+```
+
 ---
 
 # Chaikin algorithm explanation
@@ -161,6 +187,6 @@ It's basically saying: "Give me 75% of the start position plus 25% of the end po
 
 | Name | Handle | Gitea |
 |------|--------|--------|
-| Theocharoula Tarara | [@ttarara](https://platform.zone01.gr/git/ttarara) | [platform.zone01.gr/git/ttarara](https://platform.zone01.gr/git/ttarara) |
-| Manos Papoutsakis | [@mpapoutsa](https://platform.zone01.gr/git/mpapoutsa) | [platform.zone01.gr/git/mpapoutsa](https://platform.zone01.gr/git/mpapoutsa) |
-| Georgios Pavrianidis | [@gpavrian](https://platform.zone01.gr/git/gpavrian) | [platform.zone01.gr/git/gpavrian](https://platform.zone01.gr/git/gpavrian) |
+| Theocharoula Tarara | [@ttarara](https://platform.zone01.gr/git/ttarara) | 
+| Manos Papoutsakis | [@mpapoutsa](https://platform.zone01.gr/git/mpapoutsa) | 
+| Georgios Pavrianidis | [@gpavrian](https://platform.zone01.gr/git/gpavrian) | 
